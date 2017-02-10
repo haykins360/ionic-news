@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/moment/moment.js"></script>
+    <script src="lib/angular-moment/angular-moment.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+  </head>
+  <body ng-app="newsaggregator" ng-controller="AggregatorCtrl">
+
+    <ion-pane>
+      <ion-header-bar class="bar-royal">
+        <button class="button button-icon icon ion-navicon"></button>
+        <h1 class="title">Min News Aggregator</h1>
+        <button class="button button-icon icon ion-person"></button>
+      </ion-header-bar>
+      <ion-content>
+
+      <ion-refresher pulling-text="Pull to refresh..." on-refresh="loadNewerStories()">
+      </ion-refresher>
+
+  	  	<div class="list">
+  		  	<a class="item item-avatar-left" href="{{story.url}}" target="_blank" ng-repeat="story in stories">
+            <img ng-src="{{story.thumbnail}}" ng-if="story.thumbnail.startsWith('http')" />
+  			  	<h2 class="story-stitle">{{story.title}} </h2>
+            <p>
+              <span am-time-ago="{{story.created_utc}} | amFromUnix"></span> 
+              - {{story.domain}}
+            </p>
+  			 </a>
+  		  </div>
+
+        <ion-infinite-scroll on-infinite="loadOlderStories()" distance="1%">
+        </ion-infinite-scroll>
+
+      </ion-content>
+    </ion-pane>
+  </body>
+</html>
